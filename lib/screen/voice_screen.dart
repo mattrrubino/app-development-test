@@ -33,7 +33,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
   void initAsync() async {
     var dir = await getApplicationDocumentsDirectory();
     filePath = dir.path + "/audio.mp4";
-    print(filePath);
   }
 
   @override
@@ -74,7 +73,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
                           MenuButton(
                               text: "Play",
                               clickFunc: () async {
-                                print("Playing last recording...");
                                 await playRecording(filePath);
                               }),
                           SizedBox(
@@ -83,7 +81,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
                           MenuButton(
                               text: "Retry",
                               clickFunc: () async {
-                                print("Retrying...");
                                 await deleteRecording(filePath);
                                 setCompleted(false);
                               }),
@@ -93,7 +90,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
                           MenuButton(
                               text: "Submit",
                               clickFunc: () async {
-                                print("Submitting...");
                                 bool success = await uploadAudio(filePath);
 
                                 if (success) {
@@ -114,7 +110,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
                         onLongPress: () async {
                           await initRecorder(filePath);
                           await startRecording();
-                          print("Recording started.");
                         },
                         onLongPressEnd: (details) async {
                           await stopRecording();
@@ -136,8 +131,6 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                   backgroundColor: Colors.lightBlue.shade100,
                                 );
                               });
-
-                          print("Recording stopped.");
                         },
                         child: Container(
                           decoration: BoxDecoration(

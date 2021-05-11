@@ -8,7 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 Future<String> registerEmail(String email, String password) async {
   try {
-    UserCredential credential = await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     return null;
   } on FirebaseAuthException catch (e) {
@@ -25,16 +25,13 @@ Future<String> registerEmail(String email, String password) async {
         break;
     }
 
-    print(e.code);
-  } catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return "Something went wrong.";
 }
 
 Future<String> loginEmail(String email, String password) async {
   try {
-    UserCredential userCredential = await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     return null;
   } on FirebaseAuthException catch (e) {
@@ -51,18 +48,15 @@ Future<String> loginEmail(String email, String password) async {
         break;
     }
 
-    print(e.code);
-  } catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return "Something went wrong.";
 }
 
 Future<bool> loginGoogle() async {
   try {
     final GoogleSignInAccount account = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication authentication = await account
-        .authentication;
+    final GoogleSignInAuthentication authentication =
+        await account.authentication;
 
     final credential = GoogleAuthProvider.credential(
       accessToken: authentication.accessToken,
@@ -71,10 +65,7 @@ Future<bool> loginGoogle() async {
 
     FirebaseAuth.instance.signInWithCredential(credential);
     return true;
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return false;
 }
 
@@ -83,7 +74,8 @@ Future<bool> recordGrade(String grade) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     var time = FieldValue.serverTimestamp();
 
-    DocumentReference docRef = FirebaseFirestore.instance.collection("users")
+    DocumentReference docRef = FirebaseFirestore.instance
+        .collection("users")
         .doc(uid)
         .collection("quiz")
         .doc("grade");
@@ -94,48 +86,41 @@ Future<bool> recordGrade(String grade) async {
 
       if (!snapshot.exists) {
         return await recordGradeMeta(grade, false, null);
-      }
-      else {
+      } else {
         String old = snapshot.data()["answer"];
         return await recordGradeMeta(grade, true, old);
       }
     });
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return false;
 }
 
-Future<bool> recordGradeMeta(String grade, bool replaced, String replacedGrade) async {
+Future<bool> recordGradeMeta(
+    String grade, bool replaced, String replacedGrade) async {
   try {
-    DocumentReference docRef = FirebaseFirestore.instance.collection("meta")
-        .doc("grades");
+    DocumentReference docRef =
+        FirebaseFirestore.instance.collection("meta").doc("grades");
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(docRef);
 
       if (!snapshot.exists) {
-        transaction.set(docRef, {"freshman": 0, "sophomore": 0, "junior": 0, "senior": 0});
+        transaction.set(
+            docRef, {"freshman": 0, "sophomore": 0, "junior": 0, "senior": 0});
         transaction.update(docRef, {grade: 1});
         return true;
-      }
-      else if (replaced && grade != replacedGrade) {
+      } else if (replaced && grade != replacedGrade) {
         var gradeAmount = snapshot.data()[grade] + 1;
         var replacedAmount = snapshot.data()[replacedGrade] - 1;
-        transaction.update(docRef, {grade: gradeAmount, replacedGrade: replacedAmount});
-      }
-      else if (!replaced) {
+        transaction.update(
+            docRef, {grade: gradeAmount, replacedGrade: replacedAmount});
+      } else if (!replaced) {
         var gradeAmount = snapshot.data()[grade] + 1;
         transaction.update(docRef, {grade: gradeAmount});
       }
     });
-    print("Returning true");
     return true;
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return false;
 }
 
@@ -148,16 +133,15 @@ void fireLogout() {
 Future<bool> uploadAudio(String filePath) async {
   try {
     var uid = FirebaseAuth.instance.currentUser.uid;
-    var ref = FirebaseStorage.instance.ref("/users/" + uid + "/audio/" + Timestamp.now().toDate().toString() + ".mp4");
-
-    print(filePath);
+    var ref = FirebaseStorage.instance.ref("/users/" +
+        uid +
+        "/audio/" +
+        Timestamp.now().toDate().toString() +
+        ".mp4");
 
     await ref.putFile(File(filePath));
     return true;
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return false;
 }
 
@@ -169,22 +153,18 @@ Future<bool> loginFacebook() async {
     await FirebaseAuth.instance.signInWithCredential(credential);
 
     return true;
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return false;
 }
 
 Future<ListResult> recordingList() async {
   try {
     var uid = FirebaseAuth.instance.currentUser.uid;
-    ListResult result = await FirebaseStorage.instance.ref("users/" + uid + "/audio/").listAll();
+    ListResult result = await FirebaseStorage.instance
+        .ref("users/" + uid + "/audio/")
+        .listAll();
 
     return result;
-  }
-  catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return null;
 }

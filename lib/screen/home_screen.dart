@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
   HomeScreen(this.setAuth);
 
   void logout(BuildContext context) {
-    print("Logged out");
     fireLogout();
     setAuth(false);
     Navigator.of(context).pop();
@@ -44,19 +43,16 @@ class HomeScreen extends StatelessWidget {
             MenuButton(
                 text: "Play the video",
                 clickFunc: () {
-                  print("Play the video!");
                   pushScreen(context, VideoScreen());
                 }),
             MenuButton(
                 text: "Input the answer",
                 clickFunc: () {
-                  print("Input the answer!");
                   pushScreen(context, QuestionScreen());
                 }),
             MenuButton(
                 text: "Record your voice",
                 clickFunc: () {
-                  print("Record your voice!");
                   pushScreen(context, VoiceScreen());
                 }),
           ],

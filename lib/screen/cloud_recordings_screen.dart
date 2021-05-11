@@ -66,7 +66,6 @@ class _CloudRecordingsScreenState extends State<CloudRecordingsScreen> {
                                 color: Colors.red,
                               ),
                               onPressed: () {
-                                print("You stopped: " + ref.name);
                                 stopPlaying();
                                 setState(() {
                                   _playing = "";
@@ -78,7 +77,6 @@ class _CloudRecordingsScreenState extends State<CloudRecordingsScreen> {
                                 color: Colors.green,
                               ),
                               onPressed: () async {
-                                print("You clicked: " + ref.name);
                                 await stopPlaying();
                                 await playCloud(ref.name, () {
                                   if (this.mounted) {

@@ -75,7 +75,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 widthPercent: _widthPercent,
                 heightPercent: _heightPercent,
                 clickFunc: () async {
-                  print("Logging in...");
                   String newPrompt = await loginEmail(
                       _emailController.text, _passwordController.text);
 
@@ -98,7 +97,6 @@ class _EmailScreenState extends State<EmailScreen> {
                   widthPercent: _widthPercent,
                   heightPercent: _heightPercent,
                   clickFunc: () async {
-                    print("Registering...");
                     String newPrompt = await registerEmail(
                         _emailController.text, _passwordController.text);
 

@@ -124,7 +124,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         bool success = await recordGrade(_grade
                             .toString()
                             .substring(_grade.toString().indexOf(".") + 1));
-                        print(success);
                         if (success) {
                           showDialog(
                               context: context,

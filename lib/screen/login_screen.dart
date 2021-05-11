@@ -25,8 +25,6 @@ class LoginScreen extends StatelessWidget {
           MenuButton(
               text: "Login with Google",
               clickFunc: () async {
-                print("Start Google Auth!");
-
                 bool success = await loginGoogle();
                 if (success) {
                   setAuth(true);
@@ -35,8 +33,6 @@ class LoginScreen extends StatelessWidget {
           MenuButton(
               text: "Login with Facebook",
               clickFunc: () async {
-                print("Start Facebook Auth!");
-
                 bool success = await loginFacebook();
                 if (success) {
                   setAuth(true);
@@ -45,7 +41,6 @@ class LoginScreen extends StatelessWidget {
           MenuButton(
               text: "Login with Email",
               clickFunc: () {
-                print("Start Email Auth!");
                 pushScreen(context, EmailScreen(setAuth));
               }),
         ],
