@@ -33,6 +33,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
   void initAsync() async {
     var dir = await getApplicationDocumentsDirectory();
     filePath = dir.path + "/audio.mp4";
+    initRecorder(filePath);
   }
 
   @override
@@ -73,6 +74,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                           MenuButton(
                               text: "Play",
                               clickFunc: () async {
+                                print(filePath);
                                 await playRecording(filePath);
                               }),
                           SizedBox(
